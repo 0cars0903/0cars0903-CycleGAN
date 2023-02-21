@@ -2,23 +2,22 @@
 
 ## CycleGAN 공부
 ### GAN이란?
-Data의 분포를 변형시켜서 원하는 데이터와 유사하게 만들어 낸다.(세상에 존재하지 않는 데이터 생성!)  
-G(generator) : input Data의 분포를 변형시켜서 Real Data와 유사한 Fake Data를 생성하는 model  
-D(Discriminator) : input Data가 Fake Data인지 Real Data인지 판별하는 model  
-G는 더욱 유사한 data를 생성하도록 학습하고, D는 가짜를 잘 찾아내도록 학습한다!  
+* Data의 분포를 변형시켜서 원하는 데이터와 유사하게 만들어 낸다.(세상에 존재하지 않는 데이터 생성!)  
+* G(generator) : input Data의 분포를 변형시켜서 Real Data와 유사한 Fake Data를 생성하는 model  
+* D(Discriminator) : input Data가 Fake Data인지 Real Data인지 판별하는 model  
+* G는 더욱 유사한 data를 생성하도록 학습하고, D는 가짜를 잘 찾아내도록 학습한다!  
+
 ### CycleGAN의 차이점?
-이전 model인 pix2pix model의 단점인 paired data를 해결하였다.  
-X domain과 Y domain 간에 image를 변환시킨다. (사과를 오렌지처럼, 말을 얼룩말처럼)
-G는 X domain의 A image를 Y domain의 Feature와 유사하게 만들어 내기 위해 학습된다. 그러나 유사하게만 만들어 낸다면 기존의 image의 형태가 소실되는 문제가 발생한다. 이를 해결하기 위해서 순환구조의 생성모델을 사용하게 된다.  
-image A에서 G를 통해 image B라는 Fake image를 생성한다. image B는 F를 통과하여 다시 image A로 돌아가는 데, 이때 원본 image A와 유사할수록 Y domain의 Feature만 잘 골라와서 변형되어졌다고 할 수 있다. 
+* 이전 model인 pix2pix model의 단점인 paired data를 해결하였다.  
+* X domain과 Y domain 간에 image를 변환시킨다. (사과를 오렌지처럼, 말을 얼룩말처럼)
+* G는 X domain의 A image를 Y domain의 Feature와 유사하게 만들어 내기 위해 학습된다. 그러나 유사하게만 만들어 낸다면 기존의 image의 형태가 소실되는 문제가 발생한다. 이를 해결하기 위해서 순환구조의 생성모델을 사용하게 된다. image A에서 G를 통해 image B라는 Fake image를 생성한다. image B는 F를 통과하여 다시 image A로 돌아가는 데, 이때 원본 image A와 유사할수록 Y domain의 Feature만 잘 골라와서 변형되어졌다고 할 수 있다. 
+
 ## Training
-이번 프로젝트에서 사용한 CycleGAN은 아래 원본의 모델 구조를 이용하였다.
--------
-원본 출저(https://github.com/aitorzip/PyTorch-CycleGAN.git)
--------
+이번 프로젝트에서 사용한 CycleGAN model은 [원본링크](https://github.com/aitorzip/PyTorch-CycleGAN.git)의 model을 사용하였다.
+
 ### Dataset
-그림파일의 출저, 양, 데이터 구조 등등
-Data structure:
+학습데이터는 00을 사용하엿다.(Train 00장, Test 00장)
+Data structure는 다음과 같다.:
 
     .
     ├── datasets                   
@@ -31,22 +30,22 @@ Data structure:
     |   |   |   └── B              # Contains domain B images (i.e. Batman)
 
 ## Error Code
-### caught runtimeerror in dataloader worker process 3
+### 1. caught runtimeerror in dataloader worker process 3
 opt.n_cpu -> 0 
 ```
 dataloader = DataLoader(ImageDataset(opt.dataroot, transforms_=transforms_, unaligned=True), 
                         batch_size=opt.batchSize, shuffle=True, num_workers=0)
 ``` 
 #### Dataload Multi-Processing? (https://jybaek.tistory.com/799) 
-dataloader에서 random crop, shuffle등은 cpu의 영역이다. 가용 cpu 스레드 개수를 n개를 주면, 그만큼 cpu의 스레드(일꾼) n가 일해서 dataload에서 걸리는 보틀넥 현상 방지
-(https://img1.daumcdn.net/thumb/R1280x0/?scode=mtistory2&fname=https%3A%2F%2Fblog.kakaocdn.net%2Fdn%2FdeYFIB%2FbtqvBMyvG8Q%2FMYusVmKLRoXexAwPC0Juq0%2Fimg.png)
+* dataloader에서 random crop, shuffle등은 cpu의 영역이다. 가용 cpu 스레드 개수를 n개를 주면, 그만큼 cpu의 스레드(일꾼) n가 일해서 dataload에서 걸리는 보틀넥 현상 방지
+![image](https://user-images.githubusercontent.com/111993984/220262291-5a131145-e517-46cd-b699-c4ecd7141da4.png)
 
-### can't convert cuda:0 device type tensor to numpy.
+### 2. can't convert cuda:0 device type tensor to numpy.
 gpu에 할당되어 있는 tensor를 numpy 배열로 변환할 때 생기는 에러
 
 torch 라이브러리 내부의 _tensor.py에서 self.numpy()를 self.cpu().numpy()로 변경
 
-### Train!
+## Train!
 ```
 python train.py --n_epochs 50 --dataroot datasets/apple2orange/ --decay_epoch 25 --cuda
 ``` 
