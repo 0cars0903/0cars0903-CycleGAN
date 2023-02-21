@@ -1,0 +1,39 @@
+# visdom 서버 실행
+conda activate GAN
+python -m visdom.server
+
+# model 학습 및 결과 출력
+conda activate GAN
+cd C:\Users\piai\Desktop\work\CycleGAN_Project_1
+python train.py --n_epochs 50 --dataroot datasets/apple2orange/ --decay_epoch 25 --cuda
+python test.py --dataroot datasets/apple2orange/  --cuda
+
+# 웹크롤링 
+%cd 'C:/Users/piai/Desktop/work/CycleGAN_Project_1'
+
+
+
+
+
+
+
+### caught runtimeerror in dataloader worker process 3
+opt.n_cpu -> 0
+
+dataloader = DataLoader(ImageDataset(opt.dataroot, transforms_=transforms_, unaligned=True), 
+                        batch_size=opt.batchSize, shuffle=True, num_workers=0)
+
+#### 데이터 로드 멀티 프로세싱이란? (https://jybaek.tistory.com/799) 참고
+dataloader에서 random crop, shuffle등은 cpu의 영역이다. 가용 cpu 스레드 개수를 n개를 주면, 그만큼 cpu의 스레드(일꾼) n가 일해서 dataload에서 걸리는 보틀넥 현상 방지
+(https://img1.daumcdn.net/thumb/R1280x0/?scode=mtistory2&fname=https%3A%2F%2Fblog.kakaocdn.net%2Fdn%2FdeYFIB%2FbtqvBMyvG8Q%2FMYusVmKLRoXexAwPC0Juq0%2Fimg.png)
+
+### can't convert cuda:0 device type tensor to numpy.
+gpu에 할당되어 있는 tensor를 numpy 배열로 변환할 때 생기는 에러
+
+torch 라이브러리 내부의 _tensor.py에서 self.numpy()를 self.cpu().numpy()로 변경
+
+
+
+
+
+
