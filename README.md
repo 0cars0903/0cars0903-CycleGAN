@@ -1,34 +1,58 @@
-# CycleGAN
-## GAN
-* 실제 데이터의 분포(데이터의 형태, 분산)를 학습하여 유사한 데이터를 생성하는 모델입니다.
-* 픽셀들의 분포에 따라 이미지의 특징을 인식 명암이나 사진의 전체적인 채도와는 큰 상관이 없습니다.
-* Generator란?
-* Discriminator란?
-* cross-entropy 개념
-## CycleGAN
-* GAN와의 차이점?
-* pix2pix에서 발전한 사항?
------------
-## Pretrain Model
-이번 모델의 Generator와 Discriminator는 Pix2Pix 모델을 기본으로 제작되었습니다.
-## Training
-### 1. Setup the dataset
+# CycleGAN을 이용한 프로젝트
 
-dataset 구조는 다음과 같이 정의하였습니다.:
+## CycleGAN 공부
+### GAN이란?
+Data의 분포를 변형시켜서 원하는 데이터와 유사하게 만들어 낸다.(세상에 존재하지 않는 데이터 생성!)  
+G(generator) : input Data의 분포를 변형시켜서 Real Data와 유사한 Fake Data를 생성하는 model  
+D(Discriminator) : input Data가 Fake Data인지 Real Data인지 판별하는 model  
+G는 더욱 유사한 data를 생성하도록 학습하고, D는 가짜를 잘 찾아내도록 학습한다!  
+### CycleGAN의 차이점?
+이전 model인 pix2pix model의 단점인 paired data를 해결하였다.  
+X domain과 Y domain 간에 image를 변환시킨다. (사과를 오렌지처럼, 말을 얼룩말처럼)
+G는 X domain의 A image를 Y domain의 Feature와 유사하게 만들어 내기 위해 학습된다. 그러나 유사하게만 만들어 낸다면 기존의 image의 형태가 소실되는 문제가 발생한다. 이를 해결하기 위해서 순환구조의 생성모델을 사용하게 된다.  
+image A에서 G를 통해 image B라는 Fake image를 생성한다. image B는 F를 통과하여 다시 image A로 돌아가는 데, 이때 원본 image A와 유사할수록 Y domain의 Feature만 잘 골라와서 변형되어졌다고 할 수 있다. 
+## Training
+이번 프로젝트에서 사용한 CycleGAN은 아래 원본의 모델 구조를 이용하였다.
+-------
+원본 출저(https://github.com/aitorzip/PyTorch-CycleGAN.git)
+-------
+### Dataset
+그림파일의 출저, 양, 데이터 구조 등등
+Data structure:
 
     .
     ├── datasets                   
-    |   ├── <dataset_name>         # i.e. apple2orange, horse2zebra
+    |   ├── <dataset_name>         # i.e. brucewayne2batman
     |   |   ├── train              # Training
-    |   |   |   ├── A              # Contains domain A images (i.e. apple)
-    |   |   |   └── B              # Contains domain B images (i.e. orange)
-    |   |   └── test               # Testing
-    |   |   |   ├── A              # Contains domain A images (i.e. orange)
+    |   |   |   ├── A              # Contains domain A images (i.e. Bruce Wayne)
     |   |   |   └── B              # Contains domain B images (i.e. Batman)
-    
-### 2. Train!
-* epoch : 100
-* Loss 결과입니다.
+    |   |   └── test               # Testing
+    |   |   |   ├── A              # Contains domain A images (i.e. Bruce Wayne)
+    |   |   |   └── B              # Contains domain B images (i.e. Batman)
+
+## Error Code
+### caught runtimeerror in dataloader worker process 3
+opt.n_cpu -> 0 
+```
+dataloader = DataLoader(ImageDataset(opt.dataroot, transforms_=transforms_, unaligned=True), 
+                        batch_size=opt.batchSize, shuffle=True, num_workers=0)
+``` 
+#### Dataload Multi-Processing? (https://jybaek.tistory.com/799) 
+dataloader에서 random crop, shuffle등은 cpu의 영역이다. 가용 cpu 스레드 개수를 n개를 주면, 그만큼 cpu의 스레드(일꾼) n가 일해서 dataload에서 걸리는 보틀넥 현상 방지
+(https://img1.daumcdn.net/thumb/R1280x0/?scode=mtistory2&fname=https%3A%2F%2Fblog.kakaocdn.net%2Fdn%2FdeYFIB%2FbtqvBMyvG8Q%2FMYusVmKLRoXexAwPC0Juq0%2Fimg.png)
+
+### can't convert cuda:0 device type tensor to numpy.
+gpu에 할당되어 있는 tensor를 numpy 배열로 변환할 때 생기는 에러
+
+torch 라이브러리 내부의 _tensor.py에서 self.numpy()를 self.cpu().numpy()로 변경
+
+### Train!
+```
+python train.py --n_epochs 50 --dataroot datasets/apple2orange/ --decay_epoch 25 --cuda
+``` 
+### Loss
+Torch visdom을 활용하여 Loss 시각화
+[http://localhost:8097/](http://localhost:8097/)
 
 ![Generator loss](https://github.com/ai-tor/PyTorch-CycleGAN/raw/master/output/loss_G.png)
 ![Discriminator loss](https://github.com/ai-tor/PyTorch-CycleGAN/raw/master/output/loss_D.png)
@@ -36,9 +60,10 @@ dataset 구조는 다음과 같이 정의하였습니다.:
 ![Generator identity loss](https://github.com/ai-tor/PyTorch-CycleGAN/raw/master/output/loss_G_identity.png)
 ![Generator cycle loss](https://github.com/ai-tor/PyTorch-CycleGAN/raw/master/output/loss_G_cycle.png)
 
-## Testing
-
-말 사진을 얼룩말 사진으로 바꾸어 본 결과입니다.
+## Test
+```
+./test --dataroot datasets/<dataset_name>/ --cuda
+```
 
 ![Real horse](https://github.com/ai-tor/PyTorch-CycleGAN/raw/master/output/real_A.jpg)
 ![Fake zebra](https://github.com/ai-tor/PyTorch-CycleGAN/raw/master/output/fake_B.png)
