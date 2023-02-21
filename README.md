@@ -12,11 +12,16 @@
 * X domain과 Y domain 간에 image를 변환시킨다. (사과를 오렌지처럼, 말을 얼룩말처럼)
 * G는 X domain의 A image를 Y domain의 Feature와 유사하게 만들어 내기 위해 학습된다. 그러나 유사하게만 만들어 낸다면 기존의 image의 형태가 소실되는 문제가 발생한다. 이를 해결하기 위해서 순환구조의 생성모델을 사용하게 된다. image A에서 G를 통해 image B라는 Fake image를 생성한다. image B는 F를 통과하여 다시 image A로 돌아가는 데, 이때 원본 image A와 유사할수록 Y domain의 Feature만 잘 골라와서 변형되어졌다고 할 수 있다. 
 
+## Project
+벚꽃 이미지를 활용해서 거리 나무를 벚꽃 나무로 만들기
+
 ## Training
-이번 프로젝트에서 사용한 CycleGAN model은 [원본링크](https://github.com/aitorzip/PyTorch-CycleGAN.git)의 model을 사용하였다.
+이번 프로젝트에서 사용한 CycleGAN model은 [원본 링크](https://github.com/aitorzip/PyTorch-CycleGAN.git)의 model을 사용하였다.
 
 ### Dataset
-학습데이터는 00을 사용하엿다.(Train 00장, Test 00장)
+벚꽃 이미지는 Selenium을 이용하여 구글에서 '벚꽃 이미지'를 검색, 웹 크롤링을 통해 수집하였다.
+거리 이미지는 
+Train 00장, Test 00장
 Data structure는 다음과 같다.:
 
     .
