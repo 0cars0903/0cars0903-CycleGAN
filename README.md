@@ -1,9 +1,14 @@
 # CycleGAN
-* 실제 데이터의 분포(데이터의 형태, 분산)를 학습하여 유사한 데이터를 생성하는 모델
-* 픽셀들의 분포에 따라 이미지의 특징을 인식  
-명암이나 사진의 전체적인 채도와는 큰 상관이 없다.
-* Generator
-* Discriminator
+## GAN
+* 실제 데이터의 분포(데이터의 형태, 분산)를 학습하여 유사한 데이터를 생성하는 모델입니다.
+* 픽셀들의 분포에 따라 이미지의 특징을 인식 명암이나 사진의 전체적인 채도와는 큰 상관이 없습니다.
+* Generator란?
+* Discriminator란?
+* cross-entropy 개념
+## CycleGAN
+* GAN와의 차이점?
+* pix2pix에서 발전한 사항?
+-----------
 ## Pretrain Model
 이번 모델의 Generator와 Discriminator는 Pix2Pix 모델을 기본으로 제작되었습니다.
 ## Training
