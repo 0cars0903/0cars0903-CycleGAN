@@ -57,10 +57,10 @@ python train.py --n_epochs 100 --dataroot datasets/PN2PG/ --decay_epoch 50 --cud
 Torch visdom을 활용하여 Loss 시각화
 [http://localhost:8097/](http://localhost:8097/)
 
-![Discriminator loss](https://github.com/0cars0903/0cars0903-CycleGAN/blob/main/output/loss_D.png)
-![Generator GAN loss](https://github.com/0cars0903/0cars0903-CycleGAN/blob/main/output/loss_G_GAN.png)
-![Generator identity loss](https://github.com/0cars0903/0cars0903-CycleGAN/blob/main/output/loss_G_identity.png)
-![Generator cycle loss](https://github.com/0cars0903/0cars0903-CycleGAN/blob/main/output/loss_G_cycle.png)
+![Discriminator loss](https://github.com/0cars0903/0cars0903-CycleGAN/blob/main/output/loss_D.png)  
+![Generator GAN loss](https://github.com/0cars0903/0cars0903-CycleGAN/blob/main/output/loss_G_GAN.png)  
+![Generator identity loss](https://github.com/0cars0903/0cars0903-CycleGAN/blob/main/output/loss_G_identity.png)  
+![Generator cycle loss](https://github.com/0cars0903/0cars0903-CycleGAN/blob/main/output/loss_G_cycle.png)  
 
 ## Test
 ```
