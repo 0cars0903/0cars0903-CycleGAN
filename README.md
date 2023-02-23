@@ -66,5 +66,3 @@ Torch visdom을 활용하여 Loss 시각화
 ```
 ./test --dataroot datasets/PN2PG/ --cuda
 ```
-![PUBG to Fortnite](https://github.com/0cars0903/0cars0903-CycleGAN/blob/main/output/PN2PG/PUBG2Fortnite.mp4)
-![Frotnite to PUBG](https://github.com/0cars0903/0cars0903-CycleGAN/blob/main/output/PN2PG/Fortnite2PUBG.mp4)
