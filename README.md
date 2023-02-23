@@ -57,18 +57,14 @@ python train.py --n_epochs 100 --dataroot datasets/PN2PG/ --decay_epoch 50 --cud
 Torch visdom을 활용하여 Loss 시각화
 [http://localhost:8097/](http://localhost:8097/)
 
-![Generator loss](https://github.com/ai-tor/PyTorch-CycleGAN/raw/master/output/loss_G.png)
-![Discriminator loss](https://github.com/ai-tor/PyTorch-CycleGAN/raw/master/output/loss_D.png)
-![Generator GAN loss](https://github.com/ai-tor/PyTorch-CycleGAN/raw/master/output/loss_G_GAN.png)
-![Generator identity loss](https://github.com/ai-tor/PyTorch-CycleGAN/raw/master/output/loss_G_identity.png)
-![Generator cycle loss](https://github.com/ai-tor/PyTorch-CycleGAN/raw/master/output/loss_G_cycle.png)
+![Discriminator loss](https://github.com/0cars0903/0cars0903-CycleGAN/blob/main/output/loss_D.png)
+![Generator GAN loss](https://github.com/0cars0903/0cars0903-CycleGAN/blob/main/output/loss_G_GAN.png)
+![Generator identity loss](https://github.com/0cars0903/0cars0903-CycleGAN/blob/main/output/loss_G_identity.png)
+![Generator cycle loss](https://github.com/0cars0903/0cars0903-CycleGAN/blob/main/output/loss_G_cycle.png)
 
 ## Test
 ```
 ./test --dataroot datasets/PN2PG/ --cuda
 ```
-
-![Real horse](https://github.com/ai-tor/PyTorch-CycleGAN/raw/master/output/real_A.jpg)
-![Fake zebra](https://github.com/ai-tor/PyTorch-CycleGAN/raw/master/output/fake_B.png)
-![Real zebra](https://github.com/ai-tor/PyTorch-CycleGAN/raw/master/output/real_B.jpg)
-![Fake horse](https://github.com/ai-tor/PyTorch-CycleGAN/raw/master/output/fake_A.png)
+![PUBG to Fortnite](https://github.com/0cars0903/0cars0903-CycleGAN/blob/main/output/PN2PG/PUBG2Fortnite.mp4)
+![Frotnite to PUBG](https://github.com/0cars0903/0cars0903-CycleGAN/blob/main/output/PN2PG/Fortnite2PUBG.mp4)
