@@ -5,8 +5,8 @@ python -m visdom.server
 # model 학습 및 결과 출력
 conda activate GAN
 cd C:\Users\piai\Desktop\work\CycleGAN_project
-python train.py --n_epochs 50 --dataroot datasets/Cherry/ --decay_epoch 25 --cuda
-python test.py --dataroot datasets/Cherry/  --cuda
+python train.py --n_epochs 100 --dataroot datasets/PN2PG/ --decay_epoch 30 --cuda
+python test.py --dataroot datasets/PN2PG/  --cuda
 
 # 웹크롤링 (https://qzqz.tistory.com/682)
 conda activate GAN
