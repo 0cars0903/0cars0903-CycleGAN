@@ -13,26 +13,25 @@
 * G는 X domain의 A image를 Y domain의 Feature와 유사하게 만들어 내기 위해 학습된다. 그러나 유사하게만 만들어 낸다면 기존의 image의 형태가 소실되는 문제가 발생한다. 이를 해결하기 위해서 순환구조의 생성모델을 사용하게 된다. image A에서 G를 통해 image B라는 Fake image를 생성한다. image B는 F를 통과하여 다시 image A로 돌아가는 데, 이때 원본 image A와 유사할수록 Y domain의 Feature만 잘 골라와서 변형되어졌다고 할 수 있다. 
 
 ## Project
-벚꽃 이미지를 활용해서 숲 길을 벚꽃 나무길로 만들기
+PUBG 인게임 영상 이미지를 이용하여 Fortnite 영상을 현실적으로 변경하기
 
 ## Training
 이번 프로젝트에서 사용한 CycleGAN model은 [원본 링크](https://github.com/aitorzip/PyTorch-CycleGAN.git)의 model을 사용하였다.
 
 ### Dataset
-벚꽃 이미지는 Selenium을 이용하여 구글에서 '벚꽃 이미지'를 검색, 웹 크롤링을 통해 수집하였다.
-거리 이미지는 
-Train 520장, Test 226장
+YouTube에서 영상을 다운받아 프레임 단위로 구분하여 이미지로 저장하였다.
+Train 200장, Test 20장
 Data structure는 다음과 같다.:
 
     .
     ├── datasets                   
-    |   ├── <dataset_name>         # Cherry
+    |   ├── <dataset_name>         # PN2PG
     |   |   ├── train              # Training
-    |   |   |   ├── A              # Contains domain A images (Basic Tree)
-    |   |   |   └── B              # Contains domain B images (Cherry)
+    |   |   |   ├── A              # Contains domain A images (PUBG)
+    |   |   |   └── B              # Contains domain B images (Fortnite)
     |   |   └── test               # Testing
-    |   |   |   ├── A              # Contains domain A images (Basic Tree)
-    |   |   |   └── B              # Contains domain B images (Cherry)
+    |   |   |   ├── A              # Contains domain A images (PUBG)
+    |   |   |   └── B              # Contains domain B images (Fortnite)
 
 ## Error Code
 ### 1. caught runtimeerror in dataloader worker process 3
@@ -52,7 +51,7 @@ torch 라이브러리 내부의 _tensor.py에서 self.numpy()를 self.cpu().nump
 
 ## Train!
 ```
-python train.py --n_epochs 50 --dataroot datasets/apple2orange/ --decay_epoch 25 --cuda
+python train.py --n_epochs 100 --dataroot datasets/PN2PG/ --decay_epoch 50 --cuda
 ``` 
 ### Loss
 Torch visdom을 활용하여 Loss 시각화
@@ -66,7 +65,7 @@ Torch visdom을 활용하여 Loss 시각화
 
 ## Test
 ```
-./test --dataroot datasets/<dataset_name>/ --cuda
+./test --dataroot datasets/PN2PG/ --cuda
 ```
 
 ![Real horse](https://github.com/ai-tor/PyTorch-CycleGAN/raw/master/output/real_A.jpg)
